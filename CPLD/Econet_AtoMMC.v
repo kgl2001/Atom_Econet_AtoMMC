@@ -53,13 +53,17 @@ module Econet_AtoMMC(
    assign PIC_Addr[1] = Latched_PIC_Addr[1];
    assign PIC_Addr[2] = Latched_PIC_Addr[2];
 
-   assign PIC_nRD = !(  Atom_RnWR & Atom_Phi2 & !Atom_nB400);
-   assign PIC_nWR = !( !Atom_RnWR & Atom_Phi2 & !Atom_nB400);
-   assign PIC_nEn = !(  Atom_Phi2 & !Atom_nB400);
+   assign PIC_nRD = !(  Atom_RnWR & Atom_Phi2 & !Atom_Addr[3] & !Atom_nB400);
+   assign PIC_nWR = !( !Atom_RnWR & Atom_Phi2 & !Atom_Addr[3] & !Atom_nB400);
+   assign PIC_nEn = !(              Atom_Phi2 & !Atom_Addr[3] & !Atom_nB400);
+
+   assign Econet_nEn = !(Atom_Addr[3] & !Atom_Addr[2] & !Atom_nB400);
+
+   assign Atom_Data = (Atom_Phi2 & Atom_Addr[3] & Atom_Addr[2] & Atom_RnWR & !Atom_nB400) ? Econet_ID : 8'hZZ;
 
    // Latch the address in the middle of the cycle where a write to AtoMMC occurs
    always @(posedge Atom_Phi2) begin
-      if (!Atom_nB400 && !Atom_RnWR) begin
+      if (!Atom_nB400 && !Atom_Addr[3] && !Atom_RnWR) begin
          Latched_PIC_Addr[0] <= Atom_Addr[0];
          Latched_PIC_Addr[1] <= Atom_Addr[1];
          Latched_PIC_Addr[2] <= Atom_Addr[2];
