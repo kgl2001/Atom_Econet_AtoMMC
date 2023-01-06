@@ -21,27 +21,20 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-    Email: ken.lowe@skidog.co.uk
+    Email: ken@skidog.co.uk
 
-************************************************************************/
-
-
-/************************************************************************
-   Currently only the AtoMMC logic has been implemented. When the Econet
-   logic is added, it will be necessary to modify the PIC_nEn logic so
-   that it also considers the status of address line A3 (Atom_Addr[3]).
 ************************************************************************/
 
 module Econet_AtoMMC(
-   inout [7:0] Atom_Data, /*Future for Econet*/
-   input [7:0] Econet_ID, /*Future for Econet*/
+   inout [7:0] Atom_Data,
+   input [7:0] Econet_ID,
    input [3:0] Atom_Addr,
    output [2:0] PIC_Addr,
 
    input Atom_Phi2,
    input Atom_RnWR,
    input Atom_nB400,
-   output Econet_nEn, /*Future for Econet*/
+   output Econet_nEn,
    output PIC_nRD,
    output PIC_nWR,
    output PIC_nEn
